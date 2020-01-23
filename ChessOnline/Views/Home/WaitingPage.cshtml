@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "WaitingPage";
+}
+
+<h1>Aspettando secondo player</h1>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "get",
+            dataType: "text",
+            url: "https://localhost:5001/home/ChessBoard",
+            data: { 'Side': 'NotAssigned' },
+            success: function (data) {
+                if (data == null) {
+                    window.location.href = '@Url.Action("WaitingPage", "Home")';
+                }
+            },
+            error: function () {
+                window.location.href = '@Url.Action("ChessBoard", "Home")';
+
+            }
+        });
+
+
+
+    });
+
+</script>

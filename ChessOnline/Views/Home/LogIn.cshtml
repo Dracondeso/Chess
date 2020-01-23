@@ -1,0 +1,31 @@
+﻿@model ChessOnline.Models.Board.User
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<div class="text-center">
+
+    <h1 class="display-4">"Chess Online"</h1>
+</div>
+<head>
+    <link rel="stylesheet" href="C:\Users\n.desanti\source\repos\ChessOnline\ChessOnline\wwwroot\css\site.css" />=>
+
+    <title>Simple Login</title>
+</head>
+<body>
+    <form id="form_id" asp-action="WaitingPage" asp-controller="Home" method="post">
+
+        <div class="container">
+            <label asp-for="UserName"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="UserName" required />
+            <label asp-for="Password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="Password" required />
+            <button type="submit">Login</button>
+        </div>
+    </form>
+    <footer id="footer">
+        <hr>
+    </footer>
+</body>
+
+

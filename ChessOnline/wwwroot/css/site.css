@@ -1,0 +1,278 @@
+﻿.chess {
+    float: left;
+    width: 80px;
+    height: 80px;
+    font-size: 50px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.firstMove {
+}
+
+.White {
+}
+
+.Black {
+}
+
+.WhitePawn {
+    content: url('pieces/WhitePawn.png');
+}
+
+.BlackPawn {
+    content: url('pieces/BlackPawn.png')
+}
+
+.WhiteBishop {
+    content: url('pieces/WhiteBishop.png');
+}
+
+.BlackBishop {
+    content: url('pieces/BlackBishop.png')
+}
+
+.WhiteKnight {
+    content: url('pieces/WhiteKnight.png');
+}
+
+.BlackKnight {
+    content: url('pieces/BlackKnight.png')
+}
+
+.WhiteRook {
+    content: url('pieces/WhiteRook.png');
+}
+
+.BlackRook {
+    content: url('pieces/BlackRook.png')
+}
+
+.WhiteQueen {
+    content: url('pieces/WhiteQueen.png');
+}
+
+.BlackQueen {
+    content: url('pieces/BlackQueen.png')
+}
+
+.WhiteKing {
+    content: url('pieces/WhiteKing.png');
+}
+
+.BlackKing {
+    content: url('pieces/BlackKing.png')
+}
+
+.clicable {
+    cursor: pointer;
+}
+
+.movable {
+    border: 3px solid green;
+    cursor: pointer;
+}
+
+.clicked {
+    border: 3px solid blue;
+}
+
+.eatable {
+    border: 3px solid red;
+}
+
+.castling {
+    border: 3px solid violet;
+    cursor: pointer;
+}
+
+#chessBoard {
+    width: 642px;
+    height: 642px;
+    border: 1px solid black;
+}
+
+.center {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.boxDark {
+    padding: 0px;
+    width: 80px;
+    height: 80px;
+    background-color: #ff6a00
+}
+
+.boxBright {
+    padding: 0px;
+    width: 80px;
+    height: 80px;
+    background-color: #fdf5e6
+}
+/* Index.php*/
+html, body {
+    background: #ffffff;
+    font-family: lucida console;
+}
+
+#login {
+    border: 1px solid #0080ff;
+    width: 300px;
+    height: 150px;
+    font-family: lucida console;
+}
+
+#title {
+    font-size: 20px;
+    background: #71B8FF;
+    padding-top: 10px;
+    padding-bottom: 2px;
+    text-align: center;
+    border-bottom: 1px solid #0080ff;
+}
+
+#form {
+    text-align: center;
+}
+
+#txt {
+    border: 1px solid #000000;
+    margin-top: 3px;
+    margin-left: 10px;
+}
+
+#button {
+    margin-top: 5px;
+    padding: 3px;
+    border: 1px solid #0080ff;
+    background: #ccc;
+    width: 100px;
+    color: #000000;
+}
+
+    #button:hover {
+        margin-top: 5px;
+        padding: 3px;
+        border: 1px solid #0080ff;
+        background: #ededed;
+        width: 100px;
+        color: #444444;
+    }
+
+#footer {
+    bottom: 1px;
+    position: fixed;
+    width: 100%;
+}
+
+
+#topbar {
+    width: 100%;
+    border-bottom: 1px solid #0080ff;
+    background: #71b8ff;
+    padding-right: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-right: -20px;
+    margin-left: -8px;
+    margin-top: -8px;
+}
+
+#logout {
+    margin-left: 20px;
+    border: 1px solid #0080ff;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #ccc;
+    color: #000000;
+    text-decoration: none;
+}
+
+    #logout:hover {
+        margin-left: 20px;
+        border: 1px solid #0080ff;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background: #ededed;
+        color: #444444;
+        text-decoration: none;
+    }
+/* Bordered form */
+form {
+    border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+    /* Add a hover effect for buttons */
+    button:hover {
+        opacity: 0.8;
+    }
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 16px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+
+    .cancelbtn {
+        width: 100%;
+    }
+}
