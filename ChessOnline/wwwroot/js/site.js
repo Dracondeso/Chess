@@ -51,8 +51,6 @@ function chessInitialize() {
     $("#8-6").addClass("Black BlackBishop clicable firstMove");
     $("#8-7").addClass("Black BlackKnight clicable firstMove");
     $("#8-8").addClass("Black BlackRook clicable firstMove");
-
-
 } //Place the chess pieces on board
 function cleaner() {
     for (var i = 8; i > 0; i--) {

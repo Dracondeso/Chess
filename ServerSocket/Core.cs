@@ -17,26 +17,30 @@ namespace Server
         public static Dictionary<User, StateObject> StateObjects = new Dictionary<User, StateObject>();
         public static User Elaborate(User user, StateObject state)
         {
-            if (user.RoomKey == null)
+                Room room = FindLoggedUserRoom(user);
+            if (room == null)
             {
                AssignRoom(user, state);
                 return user;
             }
+            if ((room!=null) && (room.Users.Count==1))
+            {
+                return user;
+            }
             else
             {
-                Board board = FindLoggedUserBoard(user, out Room thisRoom);
-                foreach (Vector check in FindPiece(user.StartPosition, board.ChessBoard).Move(user))
+                foreach (Vector check in FindPiece(user.StartPosition, room.Board.ChessBoard).Move(user))
                 {
                     if (check.Equals(user.EndPosition))
                     {
-                        foreach (User user1 in thisRoom.Users)
+                        foreach (User user1 in room.Users)
                         {
                             if (user.YourTurn == true)
                             {
                                 if (user.UserName != user1.UserName)
                                 {
                                     Console.WriteLine("Mossa Consentita");
-                                    SendMove(user, user1, thisRoom);
+                                    SendMove(user, user1, room);
                                     return user;
                                 }
                             }
@@ -52,7 +56,7 @@ namespace Server
         }
         public static User AssignRoom(User user, StateObject stateObject)
         {
-            StateObjects.Add(user, stateObject);
+                stateObject.SetState(user);
             if (Rooms.Count == 0)
             {
                 Room room1 = new Room("room0");
@@ -75,10 +79,13 @@ namespace Server
                     string jsonToBlack = JsonConvert.SerializeObject(room.Users[1]);
                     StateObjects.TryGetValue(room.Users[0], out StateObject white);
                     StateObjects.TryGetValue(room.Users[1], out StateObject black);
-                    byte[] toBlack = (Encoding.ASCII.GetBytes(jsonToBlack));
                     byte[] toWhite = (Encoding.ASCII.GetBytes(jsonToWhite));
+                    byte[] toBlack = (Encoding.ASCII.GetBytes(jsonToBlack));
                     white.workSocket.Send(toWhite);
                     black.workSocket.Send(toBlack);
+                    //AsynchronousSocketListener.Send(white.workSocket, jsonToWhite);
+                    //AsynchronousSocketListener.Send(black.workSocket, jsonToBlack);
+
 
                     //AsynchronousSocketListener.Send(black.workSocket, jsonBlack);
                     return user;
@@ -106,7 +113,7 @@ namespace Server
             //AsynchronousSocketListener.Send(otherObject.workSocket, otherJson);
 
         }
-        public static Board FindLoggedUserBoard(User user, out Room thisRoom)
+        public static Room FindLoggedUserRoom(User user)
         {
             foreach (Room room in Rooms)
             {
@@ -114,12 +121,10 @@ namespace Server
                 {
                     if (userInList.UserName == user.UserName)
                     {
-                        thisRoom = room;
-                        return room.Board;
+                        return room;
                     }
                 }
             }
-            thisRoom = null;
             return null;
         }
         private static Vector Cardinal(Direction direction, Vector position, double increment)

@@ -1,0 +1,47 @@
+﻿<head>
+    <script src="~/js/site.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="chessBoard" class="center">
+        @for (int a = 8; a > 0; a--)
+        {
+            @for (int b = 1; b < 9; b++)
+            {
+                @if (a % 2 != b % 2)
+                {
+                    <div id="@(a)-@(b)" class="boxDark chess">
+                    </div>
+                }
+                else
+                {
+                    <div id="@(a)-@(b)" class="boxBright chess">
+                    </div>
+                }
+            }
+        }
+    </div>
+</body>
+@*Listato 2. Modificare un testo al caricamento della pagina
+
+<html>
+<head>
+    <title>AJAX, le basi prima dell’ utilizzo</title>
+    <script type=”text/javascript”>
+        <!–//
+        function prendiElementoDaId(id_elemento) {
+         var elemento;
+         if(document.getElementById)
+          elemento = document.getElementById(id_elemento);
+         else
+          elemento = document.all[id_elemento];
+         return elemento;
+        };
+        //–>
+    </script>
+</head>
+<body onload=”prendiElementoDaId(‘paragrafo’).innerHTML =‘Buon giorno <strong>JavaScript</strong>’;”>
+<p id=”paragrafo”>
+testo del paragrafo che verrà cambiato al caricamento del documento
+</p>
+</body>
+</html>*@

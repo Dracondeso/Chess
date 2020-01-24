@@ -24,6 +24,7 @@ namespace ChessOnline.Models.Board
         {
             ChessBoard = room.Board.ChessBoard;
             Side = Side.NotAssigned;
+
             RoomKey = room.Name;
         }
         public void SetUser(User user)

@@ -20,16 +20,16 @@ namespace ChessOnline.Controllers
         private string DbUser1 = "User1";
         private string DbPsw2 = "1234";
         private string DbUser2 = "User2";
-        public IActionResult LogIn(User user)
-        {
-            return View();
-        }//LoginPage for insert Username and Password
         public IActionResult Index(User user)
 
         {
 
             return View();
         }
+        public IActionResult LogIn(User user)
+        {
+            return View();
+        }//LoginPage for insert Username and Password
         //Index Page who call LogInControl 
         public bool LogInControl(User user)
         {
@@ -52,6 +52,7 @@ namespace ChessOnline.Controllers
 
                 string toServer = JsonConvert.SerializeObject(user);
                 SynchronousSocketClient.StartClient(toServer);
+
                 return View();
             }
             else
@@ -61,6 +62,10 @@ namespace ChessOnline.Controllers
         }
         public IActionResult ChessBoard(User user)
         {
+            if (user.Side== Models.Enum.Side.NotAssigned)
+            {
+                return View ("WaitingPage",user);
+            }
             return View();
         }//ChessBoard for admitted player
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
