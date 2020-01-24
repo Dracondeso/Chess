@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using ChessOnline.Models.Board;
+using ChessOnline.Models;
 using Newtonsoft.Json;
 
 namespace Server.Networking
@@ -13,6 +13,7 @@ namespace Server.Networking
     {
         // Thread signal.  
         public static ManualResetEvent allDone = new ManualResetEvent(false);
+        private static Core CoRe { get; set; }
 
         public AsynchronousSocketListener()
         {
@@ -36,7 +37,6 @@ namespace Server.Networking
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
-                Core.Listener = listener;
                 while (true)
                 {
                     // Set the event to nonsignaled state.  
@@ -94,6 +94,9 @@ namespace Server.Networking
                 // Check for end-of-file tag. If it is not there, read   
                 // more data.  
                 content = state.sb.ToString();
+                Console.WriteLine(JsonConvert.DeserializeObject<DataClientModel>(content).serverOperation.ToString());
+                string toClient = JsonConvert.SerializeObject(CoRe.Elaborate(JsonConvert.DeserializeObject<DataClientModel>(content)));
+
                 //if (content.IndexOf("<EOF>") > -1)
                 //{
                 // All the data has been read from the   
@@ -101,10 +104,8 @@ namespace Server.Networking
                 //Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
                 //    content.Length, content);
                 // Echo the data back to the client.  
-                Send(handler, content);
-                User user = JsonConvert.DeserializeObject<User>(content);
+                Send(handler, toClient);
 
-                JsonConvert.SerializeObject(Core.Elaborate(user,state));
 
                 //}
                 //else
@@ -116,7 +117,7 @@ namespace Server.Networking
         }
 
 
-        public static void Send(Socket handler, String data)
+        private static void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
@@ -137,7 +138,7 @@ namespace Server.Networking
                 int bytesSent = handler.EndSend(ar);
                 Console.WriteLine("Sent {0} bytes to client.", bytesSent);
 
-            
+
 
             }
             catch (Exception e)
@@ -286,7 +287,7 @@ namespace Server.Networking
 //                int bytesSent = handler.EndSend(ar);
 //                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
 
-            
+
 
 //            }
 //            catch (Exception e)

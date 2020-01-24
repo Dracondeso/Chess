@@ -8,16 +8,31 @@ namespace ChessOnline.Models.Board
 {
     public class Room
     {
-        public string Name;
         public Board Board;
         public List<User> Users;
-        public Room(string name)
+        public static Dictionary<string, Room> RoomsMultitone = new Dictionary<string, Room>();
+        public string Token;
+        private Room(string token)
         {
             Board = new Board();
             Users = new List<User>();
-            Name = name;
+            Token = token;
+        }
+        public static Room Instance(string token)
+        {
+            if (RoomsMultitone.ContainsKey(token))
+            {
+                return RoomsMultitone[token];
+            }
+            else
+            {
+                Room room = new Room(token);
+                RoomsMultitone.Add(token, room);
+                return room;
+            }
         }
     }
+    
 
 
 }

@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ChessOnline\ChessOnline.Models\ChessOnline.Models.csproj" />
     <ProjectReference Include="..\ChessOnline.Models\ChessOnline.Models.csproj" />
   </ItemGroup>
 

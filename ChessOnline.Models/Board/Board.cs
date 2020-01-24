@@ -47,7 +47,7 @@ namespace ChessOnline.Models.Board
             Pawn pawn16 = new Pawn(Side.Black, new Vector(8, 7));
             ChessBoard = new Dictionary<string, Piece>
             {
-                {rook1.StartPosition.ToString(), rook1},
+                {rook1.StartPosition.PositionToString(), rook1},
                 {rook2.StartPosition.ToString(),rook2},
                 {rook3.StartPosition.ToString(), rook3},
                 {rook4.StartPosition.ToString(), rook4},

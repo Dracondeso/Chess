@@ -10,15 +10,20 @@
             type: "get",
             dataType: "text",
             url: "https://localhost:5001/home/ChessBoard",
-            data: { 'Side': 'NotAssigned' },
+            data: {
+                "serverOperation": "CreateRoomOperation",
+            },
             success: function (data) {
-                if (data == null) {
+                if (data != "vai avanti") {
                     window.location.href = '@Url.Action("WaitingPage", "Home")';
                 }
+                else {
+                    window.location.href = '@Url.Action("ChessBoard", "Home")';
+                }
+
             },
             error: function () {
                 window.location.href = '@Url.Action("ChessBoard", "Home")';
-
             }
         });
 

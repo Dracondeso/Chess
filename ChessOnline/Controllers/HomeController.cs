@@ -20,13 +20,11 @@ namespace ChessOnline.Controllers
         private string DbUser1 = "User1";
         private string DbPsw2 = "1234";
         private string DbUser2 = "User2";
-        public IActionResult Index(User user)
-
+        public IActionResult Index()
         {
-
             return View();
         }
-        public IActionResult LogIn(User user)
+        public IActionResult LogIn()
         {
             return View();
         }//LoginPage for insert Username and Password
@@ -43,16 +41,13 @@ namespace ChessOnline.Controllers
                 return true;
             }
             return false;
-        }//Check if exists UserName and Password
+        }
 
         public IActionResult WaitingPage(User user)
         {
             if (LogInControl(user))
             {
-
-                string toServer = JsonConvert.SerializeObject(user);
-                SynchronousSocketClient.StartClient(toServer);
-
+                SynchronousSocketClient.StartClient(JsonConvert.SerializeObject(user));
                 return View();
             }
             else

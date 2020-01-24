@@ -27,7 +27,7 @@ namespace ChessOnline.Models.Primitives
             return this;
         }
         public Vector Subtract(Vector vector) => Sum(new Vector(-vector.X, -vector.Y));
-        public override string ToString()
+        public string PositionToString()
         {
             return X + "-" + Y;
         }

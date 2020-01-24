@@ -16,16 +16,6 @@ namespace Server.Networking
         public byte[] buffer = new byte[BufferSize];
         // Received data string.  
         public StringBuilder sb = new StringBuilder();
-        
-        User User;
-        public void SetState(User user )
-        {
-            this.User = user;
-            Core.StateObjects.Add(user, this);
-        }
-
-
-
     }
 }
 
