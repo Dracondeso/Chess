@@ -12,9 +12,9 @@ namespace ChessOnline.Models.Board.Pieces
         public Rook(Side side, Vector position) : base(side, position)
         {
         }
-        public override List<Vector> Move(User user)
+        public override List<Vector> Move(DataModel dataClient)
         {
-            base.Move(user);
+            base.Move(dataClient);
             NorthEast = 0;
             NorthWest = 0;
             SouthEast = 0;

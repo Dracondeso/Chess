@@ -6,11 +6,13 @@ using System.Text;
 
 namespace ChessOnline.Models
 {
-    public class DataClientModel
+    public class DataModel
     {
+        
         public ServerOperationType serverOperation { get; set; }
-        public List<User> Users { get ; set;}
         public Room Room { get; set; }
+       public User User;
+
 
     }
 }

@@ -12,10 +12,10 @@ namespace ChessOnline.Models.Board.Pieces
         public Bishop(Side side, Vector startPosition) : base(side, startPosition)
         {
         }
-        public override List<Vector> Move(User user)
+        public override List<Vector> Move(DataModel dataClient)
         {
 
-            base.Move(user);
+            base.Move(dataClient);
             North = 0;
             South = 0;
             East = 0;

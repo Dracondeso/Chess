@@ -11,7 +11,7 @@ namespace ChessOnline.Networking
     public class SynchronousSocketClient
     {
 
-        public static void StartClient(string toServer)
+        public static DataModel StartClient(string toServer)
         {
             // Data buffer for incoming data.  
             byte[] bytes = new byte[1024];
@@ -42,15 +42,13 @@ namespace ChessOnline.Networking
 
                     // Send the data through the socket.  
                     int bytesSent = sender.Send(msg);
-
                     // Receive the response from the remote device.  
                     int bytesRec = sender.Receive(bytes);
-                   ChessBoardController.SetUser(JsonConvert.DeserializeObject<User> (Encoding.ASCII.GetString(bytes)));
-
                     Console.WriteLine("Echoed test = {0}",
                         Encoding.ASCII.GetString(bytes, 0, bytesRec));
                     // Release the socket.  
                     sender.Shutdown(SocketShutdown.Send);
+                    return JsonConvert.DeserializeObject<DataModel>(Encoding.ASCII.GetString(bytes));
 
 
                 }
@@ -72,6 +70,7 @@ namespace ChessOnline.Networking
             {
                 Console.WriteLine(e.ToString());
             }
+            return null;
         }
     }
 }

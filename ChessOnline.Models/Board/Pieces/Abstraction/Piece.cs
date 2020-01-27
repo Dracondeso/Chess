@@ -30,7 +30,7 @@ namespace ChessOnline.Models.Board.Pieces.Abstraction
             StartPosition = startPosition;
             FirstMove = true;
         }
-        public virtual List<Vector> Move(User user)
+        public virtual List<Vector> Move(DataModel dataClient)
         {
             if (Checks == null)
             {

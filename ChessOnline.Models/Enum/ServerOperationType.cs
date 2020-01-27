@@ -10,6 +10,7 @@ namespace ChessOnline.Models.Enum
         MoveOperation,
         AssignColorOperation,
         CreateRoomOperation,
-
+        SendToClient,
+        AllDone
     }
 }

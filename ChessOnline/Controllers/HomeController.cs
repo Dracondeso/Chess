@@ -16,6 +16,8 @@ namespace ChessOnline.Controllers
 {
     public class HomeController : Controller
     {
+        public static DataModel DataClient = new DataModel();
+        public static DataModel dataFromServer = new DataModel();
         private string DbPsw1 = "1234";
         private string DbUser1 = "User1";
         private string DbPsw2 = "1234";
@@ -38,6 +40,7 @@ namespace ChessOnline.Controllers
                 options.IsEssential = true;
                 string json = JsonConvert.SerializeObject(user);
                 HttpContext.Response.Cookies.Append("AuthCookie", json, options);
+                DataClient.User = user;
                 return true;
             }
             return false;
@@ -47,7 +50,6 @@ namespace ChessOnline.Controllers
         {
             if (LogInControl(user))
             {
-                SynchronousSocketClient.StartClient(JsonConvert.SerializeObject(user));
                 return View();
             }
             else
@@ -55,13 +57,18 @@ namespace ChessOnline.Controllers
                 return View("LogIn", user);
             }
         }
-        public IActionResult ChessBoard(User user)
+        public IActionResult ChessBoard()
         {
-            if (user.Side== Models.Enum.Side.NotAssigned)
+            DataClient.serverOperation = Models.Enum.ServerOperationType.LogInOperation;
+            dataFromServer = SynchronousSocketClient.StartClient(JsonConvert.SerializeObject(DataClient));
+            if (dataFromServer.User.Side != Models.Enum.Side.NotAssigned)
             {
-                return View ("WaitingPage",user);
+                return View();
             }
-            return View();
+            else
+            {
+                return View("WaitingPage");
+            }
         }//ChessBoard for admitted player
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -72,12 +79,7 @@ namespace ChessOnline.Controllers
         {
             return View();
         }
-        public void ToServerSoket(string toServer)
-        {
-            SynchronousSocketClient.StartClient(toServer);
 
-
-        }
 
     }
 

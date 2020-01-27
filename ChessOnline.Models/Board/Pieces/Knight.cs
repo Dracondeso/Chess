@@ -13,7 +13,7 @@ namespace ChessOnline.Models.Board.Pieces
         {
 
         }
-        public override List<Vector> Move(User user)
+        public override List<Vector> Move(DataModel dataClient)
         {
             Vector position1 = new Vector(StartPosition.X + 1, StartPosition.Y);
             Vector position2 = new Vector(StartPosition.X - 1, StartPosition.Y);
@@ -24,16 +24,16 @@ namespace ChessOnline.Models.Board.Pieces
             Bishop bishop3 = new Bishop(Side, position3);
             Bishop bishop4 = new Bishop(Side, position4);
             Checks.Clear();
-            bishop1.Move(user);
+            bishop1.Move(dataClient);
           //  Core.Behavior(position1, user);
             Checks.AddRange(bishop1.Checks);
-            bishop2.Move(user);
+            bishop2.Move(dataClient);
           //  Core.Behavior(position2, user);
             Checks.AddRange(bishop2.Checks);
-            bishop3.Move(user);
+            bishop3.Move(dataClient);
           //  Core.Behavior(position3, user);
             Checks.AddRange(bishop3.Checks);
-            bishop4.Move(user);
+            bishop4.Move(dataClient);
           //  Core.Behavior(position4, user);
             Checks.AddRange(bishop4.Checks);
             return Checks;

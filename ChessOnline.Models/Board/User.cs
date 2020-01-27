@@ -15,7 +15,7 @@ namespace ChessOnline.Models.Board
         public string Password { get; set; }
         public Side Side { get; set; } = Side.NotAssigned;
         public bool YourTurn { get; set; }
-        public Dictionary<string, Piece> ChessBoard;
         public string RoomKey;
+        public Piece Piece;
     }
 }

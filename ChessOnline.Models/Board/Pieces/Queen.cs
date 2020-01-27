@@ -12,9 +12,9 @@ namespace ChessOnline.Models.Board.Pieces
         public Queen(Side side, Vector position) : base(side, position)
         {
         }
-        public override List<Vector> Move(User user)
+        public override List<Vector> Move(DataModel dataClient)
         {
-            base.Move(user);
+            base.Move(dataClient);
             return Checks;
         //    return Core.Behavior(StartPosition, user);
         }

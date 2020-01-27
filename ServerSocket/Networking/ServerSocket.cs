@@ -11,9 +11,10 @@ namespace Server.Networking
 {// State object for reading client data asynchronously  
     public class AsynchronousSocketListener
     {
+
         // Thread signal.  
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        private static Core CoRe { get; set; }
+        private static Core CoRe = new Core();
 
         public AsynchronousSocketListener()
         {
@@ -75,7 +76,7 @@ namespace Server.Networking
 
         public static void ReadCallback(IAsyncResult ar)
         {
-            String content = String.Empty;
+            string content = string.Empty;
 
             // Retrieve the state object and the handler socket  
             // from the asynchronous state object.  
@@ -94,8 +95,8 @@ namespace Server.Networking
                 // Check for end-of-file tag. If it is not there, read   
                 // more data.  
                 content = state.sb.ToString();
-                Console.WriteLine(JsonConvert.DeserializeObject<DataClientModel>(content).serverOperation.ToString());
-                string toClient = JsonConvert.SerializeObject(CoRe.Elaborate(JsonConvert.DeserializeObject<DataClientModel>(content)));
+                Console.WriteLine(JsonConvert.DeserializeObject<DataModel>(content).serverOperation.ToString());
+                string toClient = JsonConvert.SerializeObject(CoRe.Elaborate(JsonConvert.DeserializeObject<DataModel>(content)));
 
                 //if (content.IndexOf("<EOF>") > -1)
                 //{
@@ -117,7 +118,7 @@ namespace Server.Networking
         }
 
 
-        private static void Send(Socket handler, String data)
+        private static void Send(Socket handler, string data)
         {
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);

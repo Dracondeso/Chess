@@ -7,7 +7,7 @@ namespace ChessOnline.Models.Board.Pieces.Abstraction
 {
     public interface IMovable
     {
-        List<Vector> Move(User user);
+        List<Vector> Move(DataModel dataClient);
 
     }
 
