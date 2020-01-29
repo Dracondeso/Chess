@@ -12,6 +12,7 @@ namespace ChessOnline.Middleware
         private const string CookieKey = "AuthCookie";
 
         public Task InvokeAsync(HttpContext context, RequestDelegate next)// redirect to loginPage 
+
         {
             string url;
 #if DEBUG
@@ -19,19 +20,19 @@ namespace ChessOnline.Middleware
 #else
             url = "www.urlinproduzione.it";
 #endif
-            if (context.Request.Path == "/home/LogIn")
+            if (context.Request.Path == "/home/WaitingPage")
             {
-                return next.Invoke(context);
-            }
-            else
-            {
-                if (!context.Request.Cookies.ContainsKey(CookieKey))
+                while (HomeController.DataClient.User.Side == Models.Enum.Side.NotAssigned)
                 {
-                    context.Response.Redirect(url);
+
+                    context.Response.Redirect("WaitingPage");
+                    return next.Invoke(context);
                 }
+                context.Response.Redirect("ChessBoard");
             }
 
-            return next.Invoke(context);
+             return next.Invoke(context);
         }
-    }
+
+        }
 }

@@ -12,6 +12,7 @@ namespace ChessOnline.Models.Board
         public List<User> Users;
         public static Dictionary<string, Room> RoomsMultitone = new Dictionary<string, Room>();
         public string Token;
+        public Room() { }
         private Room(string token)
         {
             Board = new Board();
@@ -30,6 +31,7 @@ namespace ChessOnline.Models.Board
                 RoomsMultitone.Add(token, room);
                 return room;
             }
+
         }
     }
     

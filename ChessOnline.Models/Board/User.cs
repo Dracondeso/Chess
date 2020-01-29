@@ -16,6 +16,7 @@ namespace ChessOnline.Models.Board
         public Side Side { get; set; } = Side.NotAssigned;
         public bool YourTurn { get; set; }
         public string RoomKey;
-        public Piece Piece;
+        public string StartPosition;
+        public string EndPosition;
     }
 }

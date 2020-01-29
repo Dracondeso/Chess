@@ -26,12 +26,12 @@ namespace ChessOnline
         {
             services.AddControllersWithViews();
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });// Configure Policy for cookies 
+           // services.Configure<CookiePolicyOptions>(options =>
+           // {
+           //     // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+           ////     options.CheckConsentNeeded = context => true;
+           //     options.MinimumSameSitePolicy = SameSiteMode.None;
+           // });// Configure Policy for cookies 
 
             services.AddMvc();//add and set model view control (mvc) version
             services.AddTransient<LogInMiddleware>();//add LogInMiddleware
@@ -58,7 +58,6 @@ namespace ChessOnline
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             app.UseStaticFiles();//Enables static file serving for the current request path
             app.UseCookiePolicy();
-            //app.UseMiddleware<ConnectionStart>();
             app.UseMiddleware<LogInMiddleware>();
             app.UseRouting();
             app.UseAuthorization();
@@ -66,7 +65,7 @@ namespace ChessOnline
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=LogIn}/{id?}");
             });
         }
     }

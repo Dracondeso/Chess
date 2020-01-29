@@ -16,15 +16,21 @@ namespace ChessOnline.Controllers
 {
     public class HomeController : Controller
     {
-        public static DataModel DataClient = new DataModel();
-        public static DataModel dataFromServer = new DataModel();
+        internal static DataModel DataClient = new DataModel();
         private string DbPsw1 = "1234";
         private string DbUser1 = "User1";
         private string DbPsw2 = "1234";
         private string DbUser2 = "User2";
-        public IActionResult Index()
+        public IActionResult Index(User user)
         {
-            return View();
+            if (LogInControl(user))
+            {
+                return View();
+            }
+            else
+            {
+                return View("LogIn", user);
+            }
         }
         public IActionResult LogIn()
         {
@@ -38,37 +44,25 @@ namespace ChessOnline.Controllers
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.UtcNow.AddHours(1);
                 options.IsEssential = true;
-                string json = JsonConvert.SerializeObject(user);
-                HttpContext.Response.Cookies.Append("AuthCookie", json, options);
+                options.SameSite = SameSiteMode.Lax;
                 DataClient.User = user;
+                DataClient.serverOperation = Models.Enum.ServerOperationType.LogInOperation;
+                string json = JsonConvert.SerializeObject(DataClient);
+                HttpContext.Response.Cookies.Append("AuthCookie", json, options);
                 return true;
             }
             return false;
         }
-
-        public IActionResult WaitingPage(User user)
+        public IActionResult WaitingPage()
         {
-            if (LogInControl(user))
-            {
-                return View();
-            }
-            else
-            {
-                return View("LogIn", user);
-            }
+            string stringFromServer = SynchronousSocketClient.StartClient(HttpContext.Request.Cookies["AuthCookie"]);
+            HttpContext.Response.Cookies.Append("AuthCookie", stringFromServer);
+            DataClient = JsonConvert.DeserializeObject<DataModel>(stringFromServer);
+            return View();
         }
         public IActionResult ChessBoard()
         {
-            DataClient.serverOperation = Models.Enum.ServerOperationType.LogInOperation;
-            dataFromServer = SynchronousSocketClient.StartClient(JsonConvert.SerializeObject(DataClient));
-            if (dataFromServer.User.Side != Models.Enum.Side.NotAssigned)
-            {
-                return View();
-            }
-            else
-            {
-                return View("WaitingPage");
-            }
+            return View();
         }//ChessBoard for admitted player
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

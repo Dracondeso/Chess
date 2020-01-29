@@ -1,9 +1,16 @@
 ﻿var start;
 var check;
+var side;
+var startFromServer;
+var endFromServer;
+var yourTurn;
 $(document).ready(function () {
+    getSideFromCookie();
+    getTurnFromCookie();
     chessInitialize();
+    turnInitialize();
     $(".chess").click(function () {
-        if ($("#" + this.id).hasClass("clicable")) {
+        if ($("#" + this.id).hasClass("turn")) {
             cleaner();
             start = this.id;
             pieceChosen(start);
@@ -46,16 +53,36 @@ function chessInitialize() {
     $("#8-1").addClass("Black BlackRook clicable firstMove");
     $("#8-2").addClass("Black BlackKnight clicable firstMove");
     $("#8-3").addClass("Black BlackBishop clicable firstMove");
-    $("#8-4").addClass("Black BlackKing clicable firstMove");
+    $("#8-4").addClass("Black BlackKing clicable firstMove" );
     $("#8-5").addClass("Black BlackQueen clicable firstMove");
     $("#8-6").addClass("Black BlackBishop clicable firstMove");
     $("#8-7").addClass("Black BlackKnight clicable firstMove");
     $("#8-8").addClass("Black BlackRook clicable firstMove");
 } //Place the chess pieces on board
+function turnInitialize() {
+    if (yourTurn == "true") {
+
+        for (var i = 8; i > 0; i--) {
+            for (var j = 1; j < 9; j++) {
+                var position = i + "-" + j
+                if (side[1] == "0" && $("#" + position).hasClass("White")) {
+                    $("#" + position).addClass("turn")
+                }
+                if (side[1] == "1" && $("#" + position).hasClass("Black")) {
+                    $("#" + position).addClass("turn")
+                }
+               
+            }
+        }
+    }
+}
 function cleaner() {
     for (var i = 8; i > 0; i--) {
         for (var j = 1; j < 9; j++) {
             var position = i + "-" + j
+            if ($("#" + position).hasClass("turn")) {
+                $("#" + position).removeClass("turn");
+            }
             if ($("#" + position).hasClass("castling")) {
                 $("#" + position).removeClass("castling");
             }
@@ -75,6 +102,9 @@ function cleaner() {
             }
         }
     }
+    turnInitialize();
+
+
 }//clean assigned class
 function pieceChosen(start) {
     $("#" + start).removeClass("clicable");
@@ -396,6 +426,7 @@ function statAssigner(check, start) {
     }
 }//assign if is movable or eatable
 function move(start, check) {
+    sendMove(start, check)
 
     const clean = ['castling', 'firstMove', 'movable', 'clicked', 'clicable', 'White', 'Black', 'WhitePawn', 'BlackPawn', 'WhiteBishop', 'BlackBishop', 'WhiteKnight', 'BlackKnight', 'WhiteRook', 'BlackRook', 'WhiteQueen', 'BlackQueen', 'WhiteKing', 'BlackKing'];
     var classe2 = $("#" + start)[0].classList[2];
@@ -406,7 +437,7 @@ function move(start, check) {
     $("#" + check).addClass('clicable');
     $("#" + start).removeClass(clean);
     cleaner();
-    sendMove(start, check)
+
 }//assign and remove classes for movement
 function sendMove(start, check) {
 
@@ -416,9 +447,21 @@ function sendMove(start, check) {
     };
     JSON.stringify(json, false, 4);
 }
-function setCookie(userName, password, H_expiredTime) {
-    var d = new Date();
-    d.setTime(d.getTime() + (H_expiredTime * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = userName + ";" + password + ";" + expires;
+function getSideFromCookie() {
+    var decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.match(/"Side":[0-1]/g);
+    side = ca[0].split('"Side":');
+    //for (var i = 0; i < ca.length; i++) {
+    //    var c = ca[i];
+    //    while (c.charAt(0) == ' ') {
+    //        c = c.substring(1);
+    //    }
+    //    if (c.indexOf(Side) == 0) {
+    //        return c.substring(Side.length, c.length);
+    //    }
+}
+function getTurnFromCookie() {
+    var decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.match(/"YourTurn":false|true/g);
+    yourTurn = ca[0].split('"YourTurn":');
 }

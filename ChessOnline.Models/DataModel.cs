@@ -10,7 +10,6 @@ namespace ChessOnline.Models
     {
         
         public ServerOperationType serverOperation { get; set; }
-        public Room Room { get; set; }
        public User User;
 
 

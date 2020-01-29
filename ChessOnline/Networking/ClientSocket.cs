@@ -11,7 +11,7 @@ namespace ChessOnline.Networking
     public class SynchronousSocketClient
     {
 
-        public static DataModel StartClient(string toServer)
+        public static string StartClient(string toServer)
         {
             // Data buffer for incoming data.  
             byte[] bytes = new byte[1024];
@@ -48,7 +48,7 @@ namespace ChessOnline.Networking
                         Encoding.ASCII.GetString(bytes, 0, bytesRec));
                     // Release the socket.  
                     sender.Shutdown(SocketShutdown.Send);
-                    return JsonConvert.DeserializeObject<DataModel>(Encoding.ASCII.GetString(bytes));
+                    return Encoding.ASCII.GetString(bytes);
 
 
                 }

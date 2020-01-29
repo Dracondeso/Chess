@@ -65,8 +65,12 @@
     content: url('pieces/BlackKing.png')
 }
 
-.clicable {
+.turn {
     cursor: pointer;
+}
+
+.clicable{
+
 }
 
 .movable {

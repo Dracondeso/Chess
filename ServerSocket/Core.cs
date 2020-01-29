@@ -17,14 +17,22 @@ namespace Server
         private List<User> WaitingList = new List<User>();
         public DataModel Elaborate(DataModel dataClient)
         {
-            if (dataClient.Room != null)
+            ToClient = dataClient;
+            if (WaitingList.Count == 1)
             {
-                ToClient.serverOperation = ServerOperationType.MoveOperation;
+                if (ToClient.User.RoomKey == WaitingList[0].RoomKey)
+                {
+                    ToClient.serverOperation = ServerOperationType.SendToClient;
+                    return ToClient;
+                }
             }
-            else
+
+
+            if (ToClient.User.RoomKey != null && ToClient.User.StartPosition == null)
             {
-                ToClient.serverOperation = ServerOperationType.LogInOperation;
+                ToClient.serverOperation = ServerOperationType.AssignColorOperation;
             }
+
             while (ToClient.serverOperation != ServerOperationType.SendToClient)
             {
                 switch (ToClient.serverOperation)
@@ -36,11 +44,12 @@ namespace Server
 
                         break;
                     case ServerOperationType.AssignColorOperation:
-
+                        AssignColor();
 
                         break;
                     case ServerOperationType.CreateRoomOperation:
-                        return CreateRoom(WaitingList);
+                        CreateRoom(WaitingList);
+                        break;
                     case ServerOperationType.SendToClient:
                         break;
                     default:
@@ -66,11 +75,12 @@ namespace Server
                 ToClient = dataClient;
                 ToClient.serverOperation = ServerOperationType.CreateRoomOperation;
             }
+
             return ToClient;
         }
         public DataModel CreateRoom(List<User> users)
         {
-            ToClient.Room = Room.Instance(users[0].RoomKey);
+            Room.Instance(users[0].RoomKey).Users.AddRange(users);
             WaitingList.Clear();
             ToClient.serverOperation = ServerOperationType.AssignColorOperation;
 
@@ -111,58 +121,63 @@ namespace Server
         }
         public Dictionary<string, Piece> UpdatedBoard(DataModel dataClient)
         {
-            dataClient.Room.Board.ChessBoard.Remove(dataClient.User.Piece.StartPosition.ToString());
-            if (dataClient.Room.Board.ChessBoard.ContainsKey(dataClient.User.Piece.EndPosition.ToString()))
-            {
-                dataClient.Room.Board.ChessBoard.Remove(dataClient.User.Piece.EndPosition.ToString());
-            }
-            dataClient.Room.Board.ChessBoard.Add(dataClient.User.Piece.EndPosition.ToString(), dataClient.User.Piece);
 
-            return dataClient.Room.Board.ChessBoard;
+
+            Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.Remove(dataClient.User.StartPosition);
+            if (Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.ContainsKey(dataClient.User.EndPosition))
+            {
+                Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.Remove(dataClient.User.EndPosition);
+            }
+            Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.Add(dataClient.User.EndPosition, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition]);
+
+            return Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard;
         }
         public List<Vector> Behavior(DataModel dataClient)
         {
+
+
             for (double i = 0; i == 8; i++)
             {
                 Direction direction1 = (Direction)i;
-                if (dataClient.User.Piece.DirectionSteps[(int)i] != 0)
+                if (Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].DirectionSteps[(int)i] != 0)
                 {
-                    for (double j = 1; j <= dataClient.User.Piece.DirectionSteps[(int)i]; j++)
+                    for (double j = 1; j <= Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].DirectionSteps[(int)i]; j++)
                     {
-                        if (dataClient.Room.Board.ChessBoard.ContainsKey(Cardinal(direction1, dataClient.User.Piece.StartPosition, j).ToString()))
+                        if (Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.ContainsKey(Cardinal(direction1, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition, j).ToString()))
                         {
-                            dataClient.Room.Board.ChessBoard.TryGetValue(Cardinal(direction1, dataClient.User.Piece.StartPosition, j).ToString(), out Piece piece1);
-                            dataClient.Room.Board.ChessBoard.TryGetValue(dataClient.User.Piece.StartPosition.ToString(), out Piece piece2);
+                            Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.TryGetValue(Cardinal(direction1, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition, j).ToString(), out Piece piece1);
+                            Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.TryGetValue(Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition.ToString(), out Piece piece2);
                             if ((piece1.Side == piece2.Side) || (piece2.Name.Equals(PieceType.King)))
                             {
                                 break;
                             }
                             else
                             {
-                                dataClient.User.Piece.Checks.Add(Cardinal(direction1, dataClient.User.Piece.StartPosition, i));
+                                Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].Checks.Add(Cardinal(direction1, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition, i));
                                 break;
                             }
                         }
-                        dataClient.User.Piece.Checks.Add(Cardinal(direction1, dataClient.User.Piece.StartPosition, i));
+                        Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].Checks.Add(Cardinal(direction1, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition, i));
                     }
                 }
             }
-            return dataClient.User.Piece.Checks;
+            return Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].Checks;
         }
-        public DataModel AssignColor(DataModel dataClient)
+        public DataModel AssignColor()
         {
-            ToClient.Room.Users[0].Side = Side.White;
-            ToClient.Room.Users[1].Side = Side.Black;
-            if (ToClient.Room.Users[0].UserName == ToClient.User.UserName)
+            Room.RoomsMultitone[ToClient.User.RoomKey].Users[0].Side = Side.White;
+            Room.RoomsMultitone[ToClient.User.RoomKey].Users[0].YourTurn = true;
+            Room.RoomsMultitone[ToClient.User.RoomKey].Users[1].Side = Side.Black;
+            if (Room.RoomsMultitone[ToClient.User.RoomKey].Users[0].UserName == ToClient.User.UserName)
             {
-                ToClient.User.Side = ToClient.Room.Users[0].Side;
+                ToClient.User = Room.RoomsMultitone[ToClient.User.RoomKey].Users[0];
             }
             else
             {
-                ToClient.User.Side = ToClient.Room.Users[1].Side;
+                ToClient.User = Room.RoomsMultitone[ToClient.User.RoomKey].Users[1];
             }
             ToClient.serverOperation = ServerOperationType.SendToClient;
-            return dataClient;
+            return ToClient;
         }
     }
 }
