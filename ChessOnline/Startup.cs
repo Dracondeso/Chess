@@ -59,6 +59,7 @@ namespace ChessOnline
             app.UseStaticFiles();//Enables static file serving for the current request path
             app.UseCookiePolicy();
             app.UseMiddleware<LogInMiddleware>();
+            app.UseWebSockets();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

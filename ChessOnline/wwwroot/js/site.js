@@ -4,6 +4,10 @@ var side;
 var startFromServer;
 var endFromServer;
 var yourTurn;
+var webSocket;
+var messages = document.getElementById("messages");
+
+
 $(document).ready(function () {
     getSideFromCookie();
     getTurnFromCookie();
@@ -465,3 +469,4 @@ function getTurnFromCookie() {
     let ca = decodedCookie.match(/"YourTurn":false|true/g);
     yourTurn = ca[0].split('"YourTurn":');
 }
+
