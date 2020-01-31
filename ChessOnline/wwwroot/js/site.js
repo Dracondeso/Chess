@@ -6,9 +6,9 @@ var endFromServer;
 var yourTurn;
 var webSocket;
 var messages = document.getElementById("messages");
-
-
+let ws = new WebSocket("ws://localhost:8080/");
 $(document).ready(function () {
+    connect();
     getSideFromCookie();
     getTurnFromCookie();
     chessInitialize();
@@ -64,7 +64,7 @@ function chessInitialize() {
     $("#8-8").addClass("Black BlackRook clicable firstMove");
 } //Place the chess pieces on board
 function turnInitialize() {
-    if (yourTurn == "true") {
+    //if (yourTurn == "true") {
 
         for (var i = 8; i > 0; i--) {
             for (var j = 1; j < 9; j++) {
@@ -77,7 +77,7 @@ function turnInitialize() {
                 }
                
             }
-        }
+        //}
     }
 }
 function cleaner() {
@@ -444,12 +444,10 @@ function move(start, check) {
 
 }//assign and remove classes for movement
 function sendMove(start, check) {
-
-    var json = {
-        start: start,
-        end: check
-    };
-    JSON.stringify(json, false, 4);
+    var msg = start + check;
+    ws.send(msg);
+    alert("Message sent!");
+    
 }
 function getSideFromCookie() {
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -469,4 +467,20 @@ function getTurnFromCookie() {
     let ca = decodedCookie.match(/"YourTurn":false|true/g);
     yourTurn = ca[0].split('"YourTurn":');
 }
+function connect() {
+    ws.onopen = function () {
+        alert("About to send data");
+        ws.send("Hello server"); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
+        alert("Message sent!");
+    }
+    ws.onmessage = function (evt) {
+        alert("About to receive data");
+        var received_msg = evt.data;
+        alert("Message received = " + received_msg);
+    };
+    ws.onclose = function () {
+        // websocket is closed.
+        alert("Connection is closed...");
+    };
+} 
 

@@ -1,18 +1,21 @@
-﻿using Server.Networking;
+﻿using Engine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-namespace Server
+namespace Engine
 {
     public static class Program
     {
-        private static void Main(String[] args)
+        private static void Main(string[] args)
         {
-           AsynchronousSocketListener.StartListening();
-            
+
+            Server server = new Server();
+            server.Create();
+
+
         }
     }
 }

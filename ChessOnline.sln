@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessOnline.Models", "ChessOnline.Models\ChessOnline.Models.csproj", "{863C5D51-E120-4CB9-A348-B5ABDC4D6B81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "ServerSocket\Server.csproj", "{650BA738-DEE5-4214-8EA8-1223A7F53ED8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine", "ServerSocket\Engine.csproj", "{650BA738-DEE5-4214-8EA8-1223A7F53ED8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessOnline", "ChessOnline\ChessOnline.csproj", "{FE32C52C-EF8D-4EA0-9C5F-5BBBABCF16BC}"
 EndProject

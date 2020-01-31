@@ -4,7 +4,8 @@ using System.Net.Sockets;
 using System.Text;
 using ChessOnline.Models.Board;
 using Newtonsoft.Json;
-namespace Server.Networking
+
+namespace Engine.Networking
 {
     public class StateObject
     {

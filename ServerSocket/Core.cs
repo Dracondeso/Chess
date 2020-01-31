@@ -4,12 +4,12 @@ using ChessOnline.Models.Board.Pieces.Abstraction;
 using ChessOnline.Models.Enum;
 using ChessOnline.Models.Primitives;
 using Newtonsoft.Json;
-using Server.Networking;
+using Engine.Networking;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
-namespace Server
+namespace Engine
 {
     public class Core
     {
@@ -68,7 +68,7 @@ namespace Server
                 ToClient = dataClient;
                 ToClient.serverOperation = ServerOperationType.SendToClient;
             }
-            if ((WaitingList.Count == 1) && (WaitingList[0].UserName != dataClient.User.UserName))
+            if (WaitingList.Count == 1 && WaitingList[0].UserName != dataClient.User.UserName)
             {
                 WaitingList.Add(dataClient.User);
                 WaitingList[1].RoomKey = WaitingList[0].RoomKey;
@@ -94,28 +94,28 @@ namespace Server
                 default:
                     throw new NotImplementedException("Unrecognized value.");
                 case Direction.north:
-                    check.Update(position.X, (position.Y + increment));
+                    check.Update(position.X, position.Y + increment);
                     return check;
                 case Direction.south:
-                    check.Update(position.X, (position.Y - increment));
+                    check.Update(position.X, position.Y - increment);
                     return check;
                 case Direction.east:
-                    check.Update((position.X + increment), position.Y);
+                    check.Update(position.X + increment, position.Y);
                     return check;
                 case Direction.west:
-                    check.Update((position.X - increment), position.Y);
+                    check.Update(position.X - increment, position.Y);
                     return check;
                 case Direction.northEast:
-                    check.Update((position.X + increment), (position.Y + increment));
+                    check.Update(position.X + increment, position.Y + increment);
                     return check;
                 case Direction.northWest:
-                    check.Update((position.X - increment), (position.Y + increment));
+                    check.Update(position.X - increment, position.Y + increment);
                     return check;
                 case Direction.southEast:
-                    check.Update((position.X + increment), (position.Y - increment));
+                    check.Update(position.X + increment, position.Y - increment);
                     return check;
                 case Direction.southWest:
-                    check.Update((position.X - increment), (position.Y - increment));
+                    check.Update(position.X - increment, position.Y - increment);
                     return check;
             }
         }
@@ -147,7 +147,7 @@ namespace Server
                         {
                             Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.TryGetValue(Cardinal(direction1, Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition, j).ToString(), out Piece piece1);
                             Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard.TryGetValue(Room.RoomsMultitone[ToClient.User.RoomKey].Board.ChessBoard[dataClient.User.StartPosition].StartPosition.ToString(), out Piece piece2);
-                            if ((piece1.Side == piece2.Side) || (piece2.Name.Equals(PieceType.King)))
+                            if (piece1.Side == piece2.Side || piece2.Name.Equals(PieceType.King))
                             {
                                 break;
                             }
