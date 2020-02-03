@@ -31,8 +31,8 @@ namespace ChessOnline.Middleware
                 context.Response.Redirect("ChessBoard");
             }
 
-             return next.Invoke(context);
+            return next.Invoke(context);
         }
 
-        }
+    }
 }

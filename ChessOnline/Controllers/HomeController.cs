@@ -49,15 +49,18 @@ namespace ChessOnline.Controllers
                 DataClient.serverOperation = Models.Enum.ServerOperationType.LogInOperation;
                 string json = JsonConvert.SerializeObject(DataClient);
                 HttpContext.Response.Cookies.Append("AuthCookie", json, options);
+
                 return true;
             }
             return false;
         }
         public IActionResult WaitingPage()
         {
-            string stringFromServer = SynchronousSocketClient.StartClient(HttpContext.Request.Cookies["AuthCookie"]);
-            HttpContext.Response.Cookies.Append("AuthCookie", stringFromServer);
-            DataClient = JsonConvert.DeserializeObject<DataModel>(stringFromServer);
+            ClientServer clientServer = new ClientServer();
+            clientServer.SetUp();
+            clientServer.ClientSendData();
+          //  HttpContext.Response.Cookies.Append("AuthCookie", stringFromServer);
+           // DataClient = JsonConvert.DeserializeObject<DataModel>(stringFromServer);
             return View();
         }
         public IActionResult ChessBoard()

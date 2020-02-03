@@ -6,7 +6,7 @@ var endFromServer;
 var yourTurn;
 var webSocket;
 var messages = document.getElementById("messages");
-let ws = new WebSocket("ws://localhost:8080/");
+let ws = new WebSocket("ws://127.0.0.1:8080/");
 $(document).ready(function () {
     connect();
     getSideFromCookie();
